@@ -1,27 +1,24 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "name": "json-server",
-      "description": "typicode",
-      "date": "12"
+      "id": 1708974056489,
+      "name": "This is the first card",
+      "description": "I have no idea what is happening"
     },
     {
-      "id": 2,
-      "name": "json-server",
-      "description": "bypicode",
-      "date": "12"
+      "id": 1708974079096,
+      "name": "The cards could be pretier",
+      "description": "Yes, they definetly could be"
     },
     {
-      "id": 3,
-      "name": "json-server",
-      "description": "nypicode",
-      "date": "12"
+      "id": 1708974126734,
+      "name": "There is a lot of space for improvement",
+      "description": "Yes, there definetly is"
     },
     {
-      "id": 1708973528501,
-      "name": "asd",
-      "description": "asd"
+      "id": 1708974142080,
+      "name": "How many cards can I add?",
+      "description": "There is only one way to find out."
     }
   ]
 }

@@ -87,9 +87,8 @@ const addCardElement = (newTask: Task) => {
     <h2>${newTask.name}</h2>
     <p>${newTask.description}</p>
     <p>Date created: ${newTask.date}</p>
-    <p class="id">Card id: ${newTask.id}</p>`;
+    <p class="id hidden">${newTask.id}</p>`;
     cardHolder.append(card);
-    // addCardToDB(taskUrl, id, heading, paragraph)
 };
 
 const loadAllCardsFromDb = (tasks: Promise<Task[] | any[]>) => {
@@ -113,8 +112,6 @@ const deleteCardFromDb = (id: number) => {
         });
 };
 
-
-
 const addCardToDB = (newTask: Task) => {
     const taskUrl = `http://localhost:3004/tasks/`;
     axios.post(taskUrl, {
@@ -129,12 +126,3 @@ const addCardToDB = (newTask: Task) => {
             console.error("Failed to add card to DataBase", error);
         });
 };
-
-
-
-// getAllCards().then((tasks: Task[]) => {
-//     tasks.forEach((element: Task) => {
-//         addCardElement(element.id, element.name.toString(), element.description.toString());
-//     });
-// });
-
