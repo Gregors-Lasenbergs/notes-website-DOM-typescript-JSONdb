@@ -11,7 +11,14 @@ let newDescriptionText:string = "";
 
 
 buttons[1].addEventListener('click', ()=>{
-    addCardElement(-1, newNameText, newDescriptionText);
+    const newTask: Task = {
+        name: newNameText,
+        description: newDescriptionText,
+        id: Date.now(),
+        date: new Date(Date.now()).toString(),
+    };
+    addCardElement(newTask);
+    addCardToDB(newTask)
     popUp.classList.add('hidden');
     nameText.value = "";
     descriptionText.value = "";
@@ -30,26 +37,27 @@ nameText.addEventListener('input', () => {
 descriptionText.addEventListener('input', () => {
     newDescriptionText = descriptionText.value;
 });
-cardHolder.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
-    if (target.classList.contains('delete-button')) {
-        const taskId = parseInt(target.dataset.id);
-
-        const cardToRemove = target.closest('.card-holder__card');
-        if (cardToRemove) {
-            cardToRemove.remove();
-        }
-
-        deleteCard(taskId);
-    }
-});
-
 
 type Task = {
     id: number,
     name: string,
     description:string
+    date:string
 }
+
+cardHolder.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const id = target.parentElement.querySelector('.id').innerHTML
+    console.log(id)
+    if (target.classList.contains('delete-button')) {
+        const taskId = parseInt(id);
+        const cardToRemove = target.closest('.card-holder__card');
+        if (cardToRemove) {
+            cardToRemove.remove();
+        }
+        deleteCardFromDb(taskId)
+    }
+});
 
 const getAllCards = () => {
     const taskUrl = "http://localhost:3004/tasks";
@@ -61,7 +69,6 @@ const getAllCards = () => {
                 tasks.push(element);
             });
             console.log("Tasks received successfully", response.data);
-
             return tasks;
         })
         .catch((error) => {
@@ -70,10 +77,32 @@ const getAllCards = () => {
         });
 }
 
-const deleteCard = (id: number) => {
-    const cardToRemove = document.querySelector(`.card-holder__card[data-id="${id}"]`);
-    cardToRemove.remove();
+const addCardElement = (newTask: Task) => {
+    let card = document.createElement('div');
+    const id = Date.now()
+    const taskUrl = `http://localhost:3004/tasks/${newTask.id}`
+    card.className = 'card-holder__card';
+    card.innerHTML = `
+    <button class="delete-button" data-id="${id}">X</button>
+    <h2>${newTask.name}</h2>
+    <p>${newTask.description}</p>
+    <p>Date created: ${newTask.date}</p>
+    <p class="id">Card id: ${newTask.id}</p>`;
+    cardHolder.append(card);
+    // addCardToDB(taskUrl, id, heading, paragraph)
+};
 
+const loadAllCardsFromDb = (tasks: Promise<Task[] | any[]>) => {
+    tasks.then((tasks: Task[]) => {
+        tasks.forEach((card: Task) => {
+            addCardElement(card)
+        })
+    })
+};
+
+loadAllCardsFromDb(getAllCards())
+
+const deleteCardFromDb = (id: number) => {
     const taskUrl = `http://localhost:3004/tasks/${id}`;
     axios.delete(taskUrl)
         .then((response) => {
@@ -84,20 +113,28 @@ const deleteCard = (id: number) => {
         });
 };
 
-const addCardElement = (id: number, heading: string, paragraph: string) => {
-    let card = document.createElement('div');
-    card.className = 'card-holder__card';
-    card.innerHTML = `
-    <button class="delete-button" data-id="${id}">X</button>
-    <h2>${heading}</h2>
-    <p>${paragraph}</p>`;
-    
-    cardHolder.append(card);
+
+
+const addCardToDB = (newTask: Task) => {
+    const taskUrl = `http://localhost:3004/tasks/`;
+    axios.post(taskUrl, {
+        id: newTask.id,
+        name:newTask.name,
+        description:newTask.description,
+    })
+        .then((response) => {
+            console.log("Task added successfully", response.data);
+        })
+        .catch((error) => {
+            console.error("Failed to add card to DataBase", error);
+        });
 };
 
-getAllCards().then((tasks: Task[]) => {
-    tasks.forEach((element: Task) => {
-        addCardElement(element.id, element.name.toString(), element.description.toString());
-    });
-});
+
+
+// getAllCards().then((tasks: Task[]) => {
+//     tasks.forEach((element: Task) => {
+//         addCardElement(element.id, element.name.toString(), element.description.toString());
+//     });
+// });
 
