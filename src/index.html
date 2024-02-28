@@ -13,15 +13,25 @@
 <section class="card-add-window hidden">
     <div class="card-add-window__maker">
         <div class="card-add-window__close">
-            <button>X</button>
+            <button class="add-card__close">X</button>
         </div>
-        <input type="text" placeholder="Card Name" class="name-field">
-        <input type="text" placeholder="Card Description" class="description-field">
-        <button>Submit</button>
+        <input type="text" placeholder="Card Name" class="add-name-field">
+        <input type="text" placeholder="Card Description" class="add-description-field">
+        <button class="add-card__submit">Submit</button>
+    </div>
+</section>
+<section class="card-edit-window hidden">
+    <div class="card-edit-window__maker">
+        <div class="card-edit-window__close">
+            <button class="edit-card__close">X</button>
+        </div>
+        <input type="text" placeholder="Card Name" class="edit-name-field">
+        <input type="text" placeholder="Card Description" class="edit-description-field">
+        <button class="edit-card__submit"n>Submit</button>
     </div>
 </section>
 <nav>
-    <button class = "add-card">Add card</button>
+    <button class ="add-card">Add card</button>
 </nav>
 <section>
     <div class="card-holder">
