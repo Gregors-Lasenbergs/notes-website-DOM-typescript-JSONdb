@@ -57,6 +57,8 @@ editCardClose.addEventListener('click', ()=>{
 
 editCardSubmit.addEventListener('click', ()=>{
     console.log('editCardSubmit clicked');
+    console.log(newEditNameText)
+    console.log(newEditDescriptionText)
     const newTask: Task = {
         name: newEditNameText,
         description: newEditDescriptionText,
@@ -67,8 +69,8 @@ editCardSubmit.addEventListener('click', ()=>{
     editCardElement(editID, newTask);
     editCardInDB(editID, newTask)
     editPopUp.classList.add('hidden');
-    editNameText.value = "";
-    editDescriptionText.value = "";
+    newEditNameText = "";
+    newEditDescriptionText = "";
 });
 
 editNameText.addEventListener('input', () => {
@@ -105,6 +107,8 @@ cardHolder.addEventListener('click', (event) => {
     if (target.classList.contains('edit-button')) {
         editNameText.value = target.parentElement.querySelector('h2').innerHTML;
         editDescriptionText.value = target.parentElement.querySelector('p').innerHTML;
+        newEditNameText = editNameText.value;
+        newEditDescriptionText = editDescriptionText.value;
         editID = parseInt(id);
         editPopUp.classList.remove('hidden');
         console.log(id)
